@@ -32,7 +32,7 @@ jobs:
             sudo echo 'DB_HOST=10.0.0.138' >> .env
             sudo echo 'DB_PORT=3306' >> .env
             sudo echo 'DB_DATABASE=crud' >> .env
-            sudo echo 'DB_USERNAME=alfandirio >> .env
+            sudo echo 'DB_USERNAME=alfandirio' >> .env
             sudo echo 'DB_PASSWORD=Alfandirio123@' >> .env
             sudo echo 'BROADCAST_DRIVER=log' >> .env
             sudo echo 'CACHE_DRIVER=file' >> .env
