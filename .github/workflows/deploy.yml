@@ -1,0 +1,46 @@
+name: laravel
+
+on:
+  push:
+    branches:
+      - '*'
+jobs:
+  build:
+    name: Build and Deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Running Test Sh'
+        uses: appleboy/ssh-action@master
+        with:
+          host: 129.146.169.105
+          username: ubuntu
+          key: ${{ secrets.KEY }}
+          port: 22
+          script: |
+            cd /home/ubuntu/crud/
+            sudo chmod -R 777 storage
+            sudo chmod -R 777 bootstrap
+            sudo chmod -R 777 public
+            sudo echo 'APP_NAME=laravel' >> .env
+            sudo echo 'APP_URL=129.146.169.105' >> .env
+            sudo echo 'APP_ENV=local' >> .env
+            sudo echo 'APP_KEY=base64:ktgWVQtXl6720CGv6jDqhJcc6Yovi6/UVcrVK17DQWo=' >> .env
+            sudo echo 'APP_DEBUG=true' >> .env
+            sudo echo 'LOG_CHANNEL=stack' >> .env
+            sudo echo 'LOG_LEVEL=debug' >> .env
+            sudo echo 'DB_CONNECTION=mysql' >> .env
+            sudo echo 'DB_HOST=10.0.0.138' >> .env
+            sudo echo 'DB_PORT=3306' >> .env
+            sudo echo 'DB_DATABASE=crud' >> .env
+            sudo echo 'DB_USERNAME=alfandirio >> .env
+            sudo echo 'DB_PASSWORD=Alfandirio123@' >> .env
+            sudo echo 'BROADCAST_DRIVER=log' >> .env
+            sudo echo 'CACHE_DRIVER=file' >> .env
+            sudo echo 'QUEUE_CONNECTION=sync' >> .env
+            sudo echo 'SESSION_DRIVER=file' >> .env
+            sudo echo 'SESSION_LIFETIME=120' >> .env
+            sudo docker-compose up -d
+            sudo docker exec crud composer install
+            sudo docker exec crud php artisan migrate
+            sudo docker exec crud php artisan db:seed
+            sudo docker exec crud php artisan optimize:clear

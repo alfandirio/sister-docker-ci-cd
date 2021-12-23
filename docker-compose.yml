@@ -1,0 +1,38 @@
+version: '3'
+services:
+
+  #Laravel App
+  crud:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: 1931710059/crud-laravel
+    container_name: crud
+    restart: unless-stopped
+    tty: true
+    environment:
+      SERVICE_NAME: crud
+      SERVICE_TAGS: crud
+    working_dir: /var/www/html
+    volumes:
+      - ./:/var/www/html
+    networks:
+      - laravel-crud
+  #Nginx Service
+  nginx-crud:
+    image: nginx:alpine
+    container_name: nginx-crud
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "8090:8090"
+    volumes:
+      - ./:/var/www/html
+      - ./nginx/conf.d/:/etc/nginx/conf.d/
+    networks:
+      - laravel-crud
+
+#Docker Networks
+networks:
+  laravel-crud:
+    driver: bridge
